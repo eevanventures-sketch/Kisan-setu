@@ -1,6 +1,6 @@
-// KISAN_SETU_SW_V7 — Self-contained, zero-dependency PWA Service Worker
+// KISAN_SETU_SW_V9 — Self-contained, zero-dependency PWA Service Worker
 // Works identically on root Cloud Run URLs and subpath hosting (e.g. GitHub Pages /Kisan-setu/)
-const CACHE_NAME = 'kisan-setu-cache-v7';
+const CACHE_NAME = 'kisan-setu-cache-v9';
 
 const scopeUrl = (rel) => new URL(rel, self.registration.scope).href;
 
