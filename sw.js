@@ -1,6 +1,6 @@
-// KISAN_SETU_SW_V9 — Self-contained, zero-dependency PWA Service Worker
+// KISAN_SETU_SW_V10 — Self-contained, zero-dependency PWA Service Worker
 // Works identically on root Cloud Run URLs and subpath hosting (e.g. GitHub Pages /Kisan-setu/)
-const CACHE_NAME = 'kisan-setu-cache-v9';
+const CACHE_NAME = 'kisan-setu-cache-v10';
 
 const scopeUrl = (rel) => new URL(rel, self.registration.scope).href;
 
@@ -54,10 +54,10 @@ self.addEventListener('fetch', (event) => {
   if (url.origin !== self.location.origin) return;
   if (url.pathname.startsWith('/api/') || url.pathname.startsWith('/dl')) return;
 
-  // Navigation requests: network-first, fallback cleanly to scoped index.html
+  // Navigation requests: network-first (bypass HTTP cache), fallback cleanly to scoped index.html
   if (req.mode === 'navigate') {
     event.respondWith(
-      fetch(req)
+      fetch(req, { cache: 'no-cache' })
         .then((res) => {
           if (res && res.ok) {
             const copy = res.clone();
@@ -74,9 +74,9 @@ self.addEventListener('fetch', (event) => {
     return;
   }
 
-  // App shell assets: network-first with cache fallback so updates arrive fast
+  // App shell assets: network-first (bypass stale CDN HTTP cache) with cache fallback
   event.respondWith(
-    fetch(req)
+    fetch(req, { cache: 'no-cache' })
       .then((res) => {
         if (res && res.ok) {
           const copy = res.clone();
